@@ -1,10 +1,16 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-alert */
-class Gameboard {
-    constructor(aCoords, bCoords) {
-        this.aCoords = aCoords;
-        this.bCoords = bCoords;
+export class Gameboard {
+    constructor(shipA, shipB) {
+        this.shipA = shipA;
+        this.shipB = shipB;
+        this.turn = shipA;
     }
+
+    fire(coord) {
+        
+    }
+
 }
 
 function checkAdjacent(coord, c) {
@@ -30,7 +36,7 @@ export function isValidCoords(coord, coords) {
 
 export function createCoords() {
     const coords = new Set();
-    for (let i=0; i < 9; ++i) {
+    for (let i=0; i < 8; ++i) {
         let coord = prompt(`enter coordinates. ur coords so far are ${[...coords]}`);
         while (!isValidCoords(coord, coords)) {
             alert('invalid coords');
@@ -38,4 +44,5 @@ export function createCoords() {
         }
         coords.add(coord);
     }
+    return coords;
 }
