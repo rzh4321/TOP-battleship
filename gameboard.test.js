@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import { isValidCoords } from "./gameboard class";
+import { isValidCoords } from "./gameboard";
 
 describe("isValidCoords", () => {
 
