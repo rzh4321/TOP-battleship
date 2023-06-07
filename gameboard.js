@@ -11,6 +11,7 @@ export default class Gameboard {
 
     fire(coord) {
         const hit = this.turn.fire(coord);
+        if (this.turn.getSize() === 0) this.displayWinner(this.getTurn());
         this.turn = (this.turn === this.shipA)? this.shipB: this.shipA;
         return hit;
     }
@@ -20,6 +21,9 @@ export default class Gameboard {
         return "Player B";
     }
 
+    displayWinner(winner) {
+        console.log(`${winner} has won the game`);
+    }
 
 }
 
