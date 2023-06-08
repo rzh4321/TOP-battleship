@@ -24,18 +24,16 @@ export default class Gameboard {
     const hit = this.turn.fire(coord);
     if (hit && this.turn === this.shipA) this.predictedA.add(coord);
     else if (hit && this.turn === this.shipB) this.predictedB.add(coord);
-    if (this.turn.getSize() === 0) this.displayWinner(this.getTurn());
+    if (this.turn.getSize() === 0) {
+        return [hit, true];
+    };
     this.turn = this.turn === this.shipA ? this.shipB : this.shipA;
-    return hit;
+    return [hit, false];
   }
 
   getTurn() {
     if (this.turn === this.shipA) return "Player A";
     return "Player B";
-  }
-
-  displayWinner(winner) {
-    console.log(`${winner} has won the game`);
   }
 
   getAttacked() {
