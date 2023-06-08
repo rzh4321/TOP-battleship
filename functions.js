@@ -1,3 +1,4 @@
+/* eslint-disable no-loop-func */
 function checkAdjacent(coord, c) {
   const [cX, cY] = [+c[0], +c[1]];
   const [coordX, coordY] = [+coord[0], +coord[1]];
@@ -41,7 +42,10 @@ export function isValidCoords(coord, coords) {
 // }
 
 // displays a board to allow user to create ship. Returns set of coords
-export async function createBattleship(coords) {
+export async function createBattleship(coords, player) {
+    const [instructions, greeting, counter] = createBattleshipInstsructions(player);
+    document.body.append(instructions);
+    let cellsLeft = 8;
     const board = document.createElement('div');
     board.id = 'board';
     for (let r = 0; r < 10; ++r) {
@@ -54,6 +58,7 @@ export async function createBattleship(coords) {
             cell.addEventListener('click', () => {
               if (cell.classList.contains('chosen')) {
                 coords.delete(`${r}${c}`);
+                cellsLeft++;
               }
               else {
                 if (coords.size === 8) {
@@ -64,8 +69,10 @@ export async function createBattleship(coords) {
                   alert("Cells must be adjacent");
                   return;
                 }
+                cellsLeft--;
                 coords.add(`${r}${c}`);
               }
+              counter.textContent = `Cells left: ${cellsLeft}`;
               cell.classList.toggle('chosen');
               console.log(coords);
             })
@@ -75,6 +82,18 @@ export async function createBattleship(coords) {
     await waitForConfirmation(coords);
     document.body.innerHTML = "";
     
+}
+
+function createBattleshipInstsructions(player) {
+  const instructions = document.createElement('div');
+  instructions.classList.add('counter');
+  const greeting = document.createElement('span');
+  greeting.textContent = `Player ${player}, create your battleship`;
+  const counter = document.createElement('span');
+  counter.textContent = 'Cells left: 8';
+  instructions.append(greeting, counter);
+  document.body.append(instructions);
+  return [instructions, greeting, counter];
 }
 
 function waitForConfirmation(coords) {
