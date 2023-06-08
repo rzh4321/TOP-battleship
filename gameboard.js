@@ -7,12 +7,15 @@ export default class Gameboard {
     this.shipA = shipA;
     this.shipB = shipB;
     this.turn = shipA;
-    this.attacked = new Set();
+    this.attackedA = new Set();
+    this.attackedB = new Set();
+
   }
 
   fire(coord) {
-    if (this.attacked.has(coord)) throw new Error("this cell has already been attacked");
-    this.attacked.add(coord);
+    if ((this.turn === this.shipA && this.attackedA.has(coord)) || (this.turn === this.shipB && this.attackedB.has(coord))) throw new Error("this cell has already been attacked");
+    if (this.turn === this.shipA) this.attackedA.add(coord);
+    else this.attackedB.add(coord);
     const hit = this.turn.fire(coord);
     if (this.turn.getSize() === 0) this.displayWinner(this.getTurn());
     this.turn = this.turn === this.shipA ? this.shipB : this.shipA;
