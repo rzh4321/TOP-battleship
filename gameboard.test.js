@@ -61,7 +61,7 @@ describe("#fire() method in Gameboard", () => {
   test("if hit, coord gets added to predicted set", () => {
     const predictedSize = gameboard.predictedA.size;
     gameboard.fire("11");
-    expect(gameboard.predictedA.size).toBe(predictedSize+1);
+    expect(gameboard.predictedA.size).toBe(predictedSize + 1);
   });
 });
 

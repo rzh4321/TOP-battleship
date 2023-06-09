@@ -43,52 +43,53 @@ export function isValidCoords(coord, coords) {
 
 // displays a board to allow user to create ship. Returns set of coords
 export async function createBattleship(coords, player, size) {
-    const [instructions, greeting, counter] = createBattleshipInstructions(player, size);
-    document.body.append(instructions);
-    let cellsLeft = size;
-    const board = document.createElement('div');
-    board.id = 'board';
-    for (let r = 0; r < 10; ++r) {
-        for (let c = 0; c < 10; ++c) {
-            const cell = document.createElement('div');
-            cell.classList.add('cell');
-            board.append(cell);
-            cell.textContent = `${String.fromCharCode(r+65)}${c+1}`;
+  const [instructions, greeting, counter] = createBattleshipInstructions(
+    player,
+    size
+  );
+  document.body.append(instructions);
+  let cellsLeft = size;
+  const board = document.createElement("div");
+  board.id = "board";
+  for (let r = 0; r < 10; ++r) {
+    for (let c = 0; c < 10; ++c) {
+      const cell = document.createElement("div");
+      cell.classList.add("cell");
+      board.append(cell);
+      cell.textContent = `${String.fromCharCode(r + 65)}${c + 1}`;
 
-            cell.addEventListener('click', () => {
-              if (cell.classList.contains('chosen')) {
-                coords.delete(`${r}${c}`);
-                cellsLeft++;
-              }
-              else {
-                if (coords.size === size) {
-                  alert(`Max size is ${size}`);
-                  return;
-                }
-                if (!isValidCoords(`${r}${c}`, coords)) {
-                  alert("Cells must be adjacent");
-                  return;
-                }
-                cellsLeft--;
-                coords.add(`${r}${c}`);
-              }
-              counter.textContent = `Cells left: ${cellsLeft}`;
-              cell.classList.toggle('chosen');
-            })
+      cell.addEventListener("click", () => {
+        if (cell.classList.contains("chosen")) {
+          coords.delete(`${r}${c}`);
+          cellsLeft++;
+        } else {
+          if (coords.size === size) {
+            alert(`Max size is ${size}`);
+            return;
+          }
+          if (!isValidCoords(`${r}${c}`, coords)) {
+            alert("Cells must be adjacent");
+            return;
+          }
+          cellsLeft--;
+          coords.add(`${r}${c}`);
         }
+        counter.textContent = `Cells left: ${cellsLeft}`;
+        cell.classList.toggle("chosen");
+      });
     }
-    document.body.append(board);
-    await waitForConfirmation(coords, size);
-    document.body.innerHTML = "";
-    
+  }
+  document.body.append(board);
+  await waitForConfirmation(coords, size);
+  document.body.innerHTML = "";
 }
 
 function createBattleshipInstructions(player, size) {
-  const instructions = document.createElement('div');
-  instructions.classList.add('instructions');
-  const greeting = document.createElement('span');
+  const instructions = document.createElement("div");
+  instructions.classList.add("instructions");
+  const greeting = document.createElement("span");
   greeting.textContent = `Player ${player}, create your battleship`;
-  const counter = document.createElement('span');
+  const counter = document.createElement("span");
   counter.textContent = `Cells left: ${size}`;
   instructions.append(greeting, counter);
   document.body.append(instructions);
@@ -97,22 +98,22 @@ function createBattleshipInstructions(player, size) {
 
 function waitForConfirmation(coords, size) {
   return new Promise((resolve) => {
-    const confirmButton = document.createElement('button');
+    const confirmButton = document.createElement("button");
     confirmButton.textContent = "Done";
-    confirmButton.addEventListener('click', () => {
+    confirmButton.addEventListener("click", () => {
       if (coords.size < size) {
         alert(`Battleship size must be ${size} cells`);
-      }
-      else if (confirm("Confirm these coordinates for your battleship?")) resolve();
-    })
+      } else if (confirm("Confirm these coordinates for your battleship?"))
+        resolve();
+    });
     document.body.append(confirmButton);
-  })
+  });
 }
 
 function predictionBoardInstructions(player) {
-  const instructions = document.createElement('div');
-  instructions.classList.add('instructions');
-  const greeting = document.createElement('span');
+  const instructions = document.createElement("div");
+  instructions.classList.add("instructions");
+  const greeting = document.createElement("span");
   greeting.textContent = `It's ${player}'s turn`;
   instructions.append(greeting);
   document.body.append(instructions);
@@ -120,27 +121,28 @@ function predictionBoardInstructions(player) {
 }
 
 export async function createPredictionBoard(attacked, predicted, gameboard) {
-  const [instructions, greeting] = predictionBoardInstructions(gameboard.getTurn());
+  const [instructions, greeting] = predictionBoardInstructions(
+    gameboard.getTurn()
+  );
   document.body.append(instructions);
-  const board = document.createElement('div');
-  board.id = 'board';
+  const board = document.createElement("div");
+  board.id = "board";
   let gameOver = false;
   for (let r = 0; r < 10; ++r) {
-      for (let c = 0; c < 10; ++c) {
-          const cell = document.createElement('div');
-          if (predicted.has(`${r}${c}`)) {
-            cell.classList.add('predicted');
-          }
-          else if (attacked.has(`${r}${c}`)) {
-            cell.classList.add('attacked');
-          }
-          cell.classList.add('cell');
-          board.append(cell);
-          cell.textContent = `${String.fromCharCode(r+65)}${c+1}`;
-        }
+    for (let c = 0; c < 10; ++c) {
+      const cell = document.createElement("div");
+      if (predicted.has(`${r}${c}`)) {
+        cell.classList.add("predicted");
+      } else if (attacked.has(`${r}${c}`)) {
+        cell.classList.add("attacked");
+      }
+      cell.classList.add("cell");
+      board.append(cell);
+      cell.textContent = `${String.fromCharCode(r + 65)}${c + 1}`;
     }
+  }
   document.body.append(board);
-  const cells = Array.from(document.querySelectorAll('.cell'));
+  const cells = Array.from(document.querySelectorAll(".cell"));
   const player = gameboard.getTurn();
   gameOver = await waitForPrediction(cells, attacked, gameboard);
   disableClicking();
@@ -152,55 +154,61 @@ export async function createPredictionBoard(attacked, predicted, gameboard) {
   enableClicking();
   document.body.innerHTML = "";
   return gameOver;
-        
 }
 
 async function waitForPrediction(cells, attacked, gameboard) {
-  const promises = cells.map((cell) => new Promise((resolve) => {
-      const clickHandler = () => {
-        let r; let c;
-        if (cell.textContent.length === 3) c = '10';
-        else c = cell.textContent[1];
-        [r, c] = [cell.textContent[0].charCodeAt(0) - 'A'.charCodeAt(0), +c-1];
-        if (!attacked.has(`${r}${c}`)) {
-          const res = gameboard.fire(`${r}${c}`);
-          const [hit, gameOver] = [res[0], res[1]];
-          if (hit) {
-            cell.classList.add('predicted');
-            alert('HIT');
+  const promises = cells.map(
+    (cell) =>
+      new Promise((resolve) => {
+        const clickHandler = () => {
+          let r;
+          let c;
+          if (cell.textContent.length === 3) c = "10";
+          else c = cell.textContent[1];
+          [r, c] = [
+            cell.textContent[0].charCodeAt(0) - "A".charCodeAt(0),
+            +c - 1,
+          ];
+          if (!attacked.has(`${r}${c}`)) {
+            const res = gameboard.fire(`${r}${c}`);
+            const [hit, gameOver] = [res[0], res[1]];
+            if (hit) {
+              cell.classList.add("predicted");
+              alert("HIT");
+            } else {
+              cell.classList.add("attacked");
+              alert("MISS");
+            }
+            resolve(gameOver);
           }
-          else {
-            cell.classList.add('attacked');
-            alert('MISS');
-          }
-          resolve(gameOver);
-        }
-      };
+        };
 
-      cell.addEventListener('click', clickHandler);
-    }));
-    const res = Promise.race(promises);
-    return res;
+        cell.addEventListener("click", clickHandler);
+      })
+  );
+  const res = Promise.race(promises);
+  return res;
 }
 
 function wait(time) {
   return new Promise((resolve) => {
     setTimeout(() => {
-      resolve();}, time);
-  })
+      resolve();
+    }, time);
+  });
 }
 
 function disableClickHandler(event) {
   event.preventDefault();
   event.stopPropagation();
-};
+}
 
 function enableClicking() {
-  document.removeEventListener('click', disableClickHandler, true);
+  document.removeEventListener("click", disableClickHandler, true);
 }
 
 function disableClicking() {
-  document.addEventListener('click', disableClickHandler, true);
+  document.addEventListener("click", disableClickHandler, true);
 }
 
 export function promptValidInteger() {
@@ -211,7 +219,8 @@ export function promptValidInteger() {
     userInput = parseInt(prompt("Enter a valid integer between 1 and 9:"));
 
     // Check if the input is a valid integer between 1 and 9
-    isValidInput = Number.isInteger(userInput) && userInput >= 1 && userInput <= 9;
+    isValidInput =
+      Number.isInteger(userInput) && userInput >= 1 && userInput <= 9;
 
     if (!isValidInput) {
       alert("Invalid input. Please enter a valid integer between 1 and 9.");
@@ -220,8 +229,6 @@ export function promptValidInteger() {
 
   return userInput;
 }
-
-
 
 /*
 1. create board, while creating, add event listeners to each cell. when cell is clicked, append

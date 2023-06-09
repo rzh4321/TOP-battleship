@@ -25,8 +25,8 @@ export default class Gameboard {
     if (hit && this.turn === this.shipA) this.predictedA.add(coord);
     else if (hit && this.turn === this.shipB) this.predictedB.add(coord);
     if (this.turn.getSize() === 0) {
-        return [hit, true];
-    };
+      return [hit, true];
+    }
     this.turn = this.turn === this.shipA ? this.shipB : this.shipA;
     return [hit, false];
   }
