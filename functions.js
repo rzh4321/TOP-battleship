@@ -74,7 +74,6 @@ export async function createBattleship(coords, player, size) {
               }
               counter.textContent = `Cells left: ${cellsLeft}`;
               cell.classList.toggle('chosen');
-              console.log(coords);
             })
         }
     }
@@ -163,7 +162,6 @@ async function waitForPrediction(cells, attacked, gameboard) {
         if (cell.textContent.length === 3) c = '10';
         else c = cell.textContent[1];
         [r, c] = [cell.textContent[0].charCodeAt(0) - 'A'.charCodeAt(0), +c-1];
-        console.log(`${r}${c}`);
         if (!attacked.has(`${r}${c}`)) {
           const res = gameboard.fire(`${r}${c}`);
           const [hit, gameOver] = [res[0], res[1]];
@@ -204,6 +202,25 @@ function enableClicking() {
 function disableClicking() {
   document.addEventListener('click', disableClickHandler, true);
 }
+
+export function promptValidInteger() {
+  let userInput = 0;
+  let isValidInput = false;
+
+  while (!isValidInput) {
+    userInput = parseInt(prompt("Enter a valid integer between 1 and 9:"));
+
+    // Check if the input is a valid integer between 1 and 9
+    isValidInput = Number.isInteger(userInput) && userInput >= 1 && userInput <= 9;
+
+    if (!isValidInput) {
+      alert("Invalid input. Please enter a valid integer between 1 and 9.");
+    }
+  }
+
+  return userInput;
+}
+
 
 
 /*

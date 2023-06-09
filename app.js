@@ -1,6 +1,6 @@
 import Gameboard from "./gameboard.js";
 import Ship from "./ship.js";
-import { createBattleship, createPredictionBoard } from "./functions.js";
+import { createBattleship, createPredictionBoard, promptValidInteger } from "./functions.js";
 
 // const coordsA = createCoords();
 // const coordsB = createCoords();
@@ -8,9 +8,10 @@ import { createBattleship, createPredictionBoard } from "./functions.js";
 // const shipB = new Ship(coordsB);
 // const gameBoard = new Gameboard(shipA, shipB);
 
-const SHIP_SIZE = 2;
+let SHIP_SIZE = 2;
 
 do {
+    SHIP_SIZE = promptValidInteger();
     const coordsA = new Set();
     const coordsB = new Set();
 
