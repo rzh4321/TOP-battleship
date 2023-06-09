@@ -34,7 +34,7 @@ button:hover {
     transition: filter 0.3s ease;
 }
 
-.counter {
+.instructions {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -43,3 +43,26 @@ button:hover {
     margin-bottom: 10px;
     font-size: 20px;
 }
+
+.cell.attacked, .cell.predicted {
+    cursor: default;
+    color: black
+}
+
+.cell.predicted {
+    background-color: green;
+}
+
+.cell.attacked {
+    background-color: red;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    pointer-events: none;
+  }

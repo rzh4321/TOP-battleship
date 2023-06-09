@@ -14,11 +14,11 @@ export default class Gameboard {
   }
 
   fire(coord) {
-    if (
-      (this.turn === this.shipA && this.attackedA.has(coord)) ||
-      (this.turn === this.shipB && this.attackedB.has(coord))
-    )
-      throw new Error("this cell has already been attacked");
+    // if (
+    //   (this.turn === this.shipA && this.attackedA.has(coord)) ||
+    //   (this.turn === this.shipB && this.attackedB.has(coord))
+    // )
+    //   throw new Error("this cell has already been attacked");
     if (this.turn === this.shipA) this.attackedA.add(coord);
     else this.attackedB.add(coord);
     const hit = this.turn.fire(coord);
