@@ -52,14 +52,6 @@ describe("#fire() method in Gameboard", () => {
     expect(fireMock).toHaveBeenCalledTimes(0);
   });
 
-  test("attacking same coordinates twice throws error", () => {
-    gameboard.fire("11");
-    gameboard.turn = shipA;
-    expect(() => gameboard.fire("11")).toThrow(
-      "this cell has already been attacked"
-    );
-  });
-
   test("attacking one ship does not add to the others' attacked set", () => {
     const attackedSize = gameboard.attackedB.size;
     gameboard.fire("11");

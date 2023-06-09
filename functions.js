@@ -142,11 +142,14 @@ export async function createPredictionBoard(attacked, predicted, gameboard) {
     }
   document.body.append(board);
   const cells = Array.from(document.querySelectorAll('.cell'));
+  const player = gameboard.getTurn();
   gameOver = await waitForPrediction(cells, attacked, gameboard);
   disableClicking();
-  console.log('prediction received');
-  console.log(gameOver);
-  await wait();
+  if (gameOver) {
+    alert(`${player} HAS WON`);
+    await wait(2000);
+  }
+  await wait(2000);
   enableClicking();
   document.body.innerHTML = "";
   return gameOver;
@@ -182,10 +185,10 @@ async function waitForPrediction(cells, attacked, gameboard) {
     return res;
 }
 
-function wait() {
+function wait(time) {
   return new Promise((resolve) => {
     setTimeout(() => {
-      resolve();}, 4000);
+      resolve();}, time);
   })
 }
 

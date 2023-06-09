@@ -9,19 +9,25 @@ import { createBattleship, createPredictionBoard } from "./functions.js";
 // const gameBoard = new Gameboard(shipA, shipB);
 
 const SHIP_SIZE = 2;
-const coordsA = new Set();
-const coordsB = new Set();
 
-await createBattleship(coordsA, 'A', SHIP_SIZE);
-await createBattleship(coordsB, 'B', SHIP_SIZE);
-const shipA = new Ship(coordsA);
-const shipB = new Ship(coordsB);
+do {
+    const coordsA = new Set();
+    const coordsB = new Set();
 
-const gameboard = new Gameboard(shipA, shipB);
-let gameOver = false;
-while (!gameOver) {
-    if (gameboard.getTurn() == 'Player A')
-        gameOver = await createPredictionBoard(gameboard.attackedA, gameboard.predictedA, gameboard);
-    else
-        gameOver = await createPredictionBoard(gameboard.attackedB, gameboard.predictedB, gameboard);
+    await createBattleship(coordsA, 'A', SHIP_SIZE);
+    await createBattleship(coordsB, 'B', SHIP_SIZE);
+    const shipA = new Ship(coordsA);
+    const shipB = new Ship(coordsB);
+
+    const gameboard = new Gameboard(shipA, shipB);
+    let gameOver = false;
+    while (!gameOver) {
+        if (gameboard.getTurn() == 'Player A')
+            gameOver = await createPredictionBoard(gameboard.attackedA, gameboard.predictedA, gameboard);
+        else
+            gameOver = await createPredictionBoard(gameboard.attackedB, gameboard.predictedB, gameboard);
+    }
 }
+while (
+    confirm('Play again?')
+)
